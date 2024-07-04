@@ -1,10 +1,13 @@
 'use server';
 
 import sqlite3 from 'sqlite3';
+import path from 'path';
 
 
 export const authActions = async (value: String) => {
-  const db = new sqlite3.Database('./tsisc.sqlite3');
+  const filepath = path.join(process.cwd(), 'tsisc.sqlite3');
+
+  const db = new sqlite3.Database(filepath);
   //データベース内のdataテーブルにあるuuidカラムの値がvalueと一致するものを取得
   interface Action {
     key: string;

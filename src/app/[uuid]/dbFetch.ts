@@ -1,11 +1,14 @@
 'use server';
 
 import sqlite3 from 'sqlite3';
+import path from 'path';
 
-export const fetchActions = async (path: String) => {
-  const db = new sqlite3.Database('./tsisc.sqlite3');
+export const fetchActions = async (lpath: String) => {
+  const filepath = path.join(process.cwd(), 'tsisc.sqlite3');
+
+  const db = new sqlite3.Database(filepath);
   const actions = await new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM Schedule WHERE key = '${path}'`, (err, rows) => {
+    db.all(`SELECT * FROM Schedule WHERE key = '${lpath}'`, (err, rows) => {
       if (err) {
         reject(err);
       } else {
