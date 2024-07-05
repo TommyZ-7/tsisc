@@ -50,7 +50,6 @@ export const fetchActions = async () => {
   //supabaseのScheduleテーブルから全てのデータを取得
   const { data, error } = await supabase.from("Schedule").select();
   if (error) throw error;
-  console.log(data);
   return data;
 }
 
