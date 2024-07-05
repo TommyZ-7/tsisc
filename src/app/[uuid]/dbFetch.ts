@@ -2,22 +2,19 @@
 
 import sqlite3 from 'sqlite3';
 import path from 'path';
+import { supabase } from '@/lib/supabaseClient';
+
 
 export const fetchActions = async (lpath: String) => {
-  const filepath = path.join(process.cwd(), 'tsisc.sqlite3');
+  //supabaseのScheduleテーブル内のkeyカラムとlpathの値が一致するものを取得
+  const { data, error } = await supabase.from("Schedule").select();
+  if (error) throw error;
+  
+  const actions = data.filter((action: { key: String; }) => action.key === lpath);
 
-  const db = new sqlite3.Database(filepath);
-  const actions = await new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM Schedule WHERE key = '${lpath}'`, (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
+
+
 
   
-  db.close();
   return JSON.parse(JSON.stringify(actions));
 };

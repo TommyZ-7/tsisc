@@ -2,29 +2,19 @@
 
 import sqlite3 from 'sqlite3';
 import path from 'path';
+import { supabase } from '@/lib/supabaseClient';
+
 
 
 export const authActions = async (value: String) => {
-  const filepath = path.join(process.cwd(), 'tsisc.sqlite3');
-
-  const db = new sqlite3.Database(filepath);
-  //データベース内のdataテーブルにあるuuidカラムの値がvalueと一致するものを取得
-  interface Action {
-    key: string;
-    // add other properties here if needed
-  }
+  const { data, error } = await supabase.from("data").select();
+  //uuidカラムの値がvalueと一致するものを取得
+  if (error) throw error;
+  console.log(data);
+  const actions = data.filter((action: { uuid: String; }) => action.uuid === value);
   
-  const actions: Action[] = await new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM data WHERE uuid = '${value}'`, (err, rows: unknown[]) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows as Action[]);
-      }
-    });
-  });
   
-  db.close();
+  console.log(actions);
   
   //なかった場合404を返す 
   if (actions.length === 0) {

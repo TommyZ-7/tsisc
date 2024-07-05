@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { fetchActions } from './dbFetch';
 import { useRouter } from 'next/navigation';
 import { authActions } from './authdb';
+import { supabase } from '@/lib/supabaseClient';
+
 import {
   Table,
   TableBody,
@@ -45,75 +47,82 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
+import { CodeSquare } from 'lucide-react';
 
 type Action = {
   id: number;
   comment: string;
   name: string;
-  mon1: boolean;
-  mon2: boolean;
-  mon3: boolean;
-  mon4: boolean;
-  mon5: boolean;
-  mon6: boolean;
-  tue1: boolean;
-  tue2: boolean;
-  tue3: boolean;
-  tue4: boolean;
-  tue5: boolean;
-  tue6: boolean;
-  wed1: boolean;
-  wed2: boolean;
-  wed3: boolean;
-  wed4: boolean;
-  wed5: boolean;
-  wed6: boolean;
-  thu1: boolean;
-  thu2: boolean;
-  thu3: boolean;
-  thu4: boolean;
-  thu5: boolean;
-  thu6: boolean;
-  fri1: boolean;
-  fri2: boolean;
-  fri3: boolean;
-  fri4: boolean;
-  fri5: boolean;
-  fri6: boolean;
-  sat1: boolean;
-  sat2: boolean;
-  sat3: boolean;
-  sat4: boolean;
-  sat5: boolean;
-  sat6: boolean;
+  mon1: number;
+  mon2: number;
+  mon3: number;
+  mon4: number;
+  mon5: number;
+  mon6: number;
+  tue1: number;
+  tue2: number;
+  tue3: number;
+  tue4: number;
+  tue5: number;
+  tue6: number;
+  wed1: number;
+  wed2: number;
+  wed3: number;
+  wed4: number;
+  wed5: number;
+  wed6: number;
+  thu1: number;
+  thu2: number;
+  thu3: number;
+  thu4: number;
+  thu5: number;
+  thu6: number;
+  fri1: number;
+  fri2: number;
+  fri3: number;
+  fri4: number;
+  fri5: number;
+  fri6: number;
+  sat1: number;
+  sat2: number;
+  sat3: number;
+  sat4: number;
+  sat5: number;
+  sat6: number;
 };
 
 export default function Page() {
   const route = useRouter();
   const [value, setValue] = React.useState("")
-  const [iinntyo, setIinntyo] = useState<Action[]>([]);
-  const [huku, setHuku] = useState<Action[]>([]);
-  const [syomu, setSyomu] = useState<Action[]>([]);
-  const [syougai, setSyougai] = useState<Action[]>([]);
-  const [kikaku, setKikaku] = useState<Action[]>([]);
-  const [kouhou, setKouhou] = useState<Action[]>([]);
+  const [iinntyo, setIinntyo] = useState<Action>();
+  const [huku, setHuku] = useState<Action>();
+  const [syomu, setSyomu] = useState<Action>();
+  const [syougai, setSyougai] = useState<Action>();
+  const [kikaku, setKikaku] = useState<Action>();
+  const [kouhou, setKouhou] = useState<Action>();
   const [warnMSG, setWarnMSG] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const list = [iinntyo, huku, syomu, syougai, kikaku, kouhou];
   const listName = ['委員長', '副委員長', '庶務局', '渉外局', '企画局', '広報局'];
+
+
   useEffect(() => {
     const response = async () => {
       const response = await fetchActions();
-      setIinntyo(response.filter((action: Action) => action.name === 'iinntyo'));
-      setHuku(response.filter((action: Action) => action.name === 'huku'));
-      setSyomu(response.filter((action: Action) => action.name === 'syomu'));
-      setSyougai(response.filter((action: Action) => action.name === 'syougai'));
-      setKikaku(response.filter((action: Action) => action.name === 'kikaku'));
-      setKouhou(response.filter((action: Action) => action.name === 'kouhou'));
+      //responsの中の1番目の配列を取得
+      setIinntyo(response.filter((action: { id: number; }) => action.id === 1)[0]);
+      setHuku(response.filter((action: { id: number; }) => action.id === 2)[0]);
+      setSyomu(response.filter((action: { id: number; }) => action.id === 3)[0]);
+      setSyougai(response.filter((action: { id: number; }) => action.id === 4)[0]);
+      setKikaku(response.filter((action: { id: number; }) => action.id === 5)[0]);
+      setKouhou(response.filter((action: { id: number; }) => action.id === 6)[0]);
       setIsLoading(false);
     };
     response();
   }, []);
+  
+
+
 
   const handlePress = () => {
     console.log('pressed');
@@ -126,7 +135,6 @@ export default function Page() {
     setWarnMSG(false);
     const response = async () => {
       const response = await authActions(value);
-      console.log(response);
       if (response.status === 404) {
         return;
       }
@@ -141,11 +149,10 @@ export default function Page() {
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      
-      {list.map((item) => {
+      {list.map((item , index) => {
         return (
-          <div key={item[0].id} className="pb-12">
-            <h1 className="text-2xl font-bold text-center">{listName[item[0].id - 1]}</h1>
+          <div key={index} className=" max-w-2xl">
+            <h1 className="text-2xl font-bold text-center">{listName[index]}</h1>
             <Card>
             <Table>
               <TableHeader>
@@ -162,68 +169,69 @@ export default function Page() {
               <TableBody>
               <TableRow key={1}>
                   <TableCell className="">1</TableCell>
-                  <TableCell className={item[0].mon1 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].tue1 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].wed1 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].thu1 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].fri1 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].sat1 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.mon1 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.tue1 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.wed1 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.thu1 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.fri1 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.sat1 ? "text-center bg-green-400" : ""}></TableCell>
                 </TableRow>
                 <TableRow key={2}>
                   <TableCell className="">2</TableCell>
-                  <TableCell className={item[0].mon2 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].tue2 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].wed2 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].thu2 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].fri2 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].sat2 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.mon2 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.tue2 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.wed2 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.thu2 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.fri2 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.sat2 ? "text-center bg-green-400" : ""}></TableCell>
                 </TableRow>
                 <TableRow key={3}>
                   <TableCell className="">3</TableCell>
-                  <TableCell className={item[0].mon3 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].tue3 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].wed3 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].thu3 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].fri3 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].sat3 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.mon3 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.tue3 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.wed3 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.thu3 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.fri3 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.sat3 ? "text-center bg-green-400" : ""}></TableCell>
                 </TableRow>
                 <TableRow key={4}>
                   <TableCell className="">4</TableCell>
-                  <TableCell className={item[0].mon4 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].tue4 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].wed4 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].thu4 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].fri4 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].sat4 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.mon4 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.tue4 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.wed4 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.thu4 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.fri4 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.sat4 ? "text-center bg-green-400" : ""}></TableCell>
                 </TableRow>
                 <TableRow key={5}>
                   <TableCell className="">5</TableCell>
-                  <TableCell className={item[0].mon5 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].tue5 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].wed5 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].thu5 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].fri5 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].sat5 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.mon5 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.tue5 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.wed5 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.thu5 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.fri5 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.sat5 ? "text-center bg-green-400" : ""}></TableCell>
                 </TableRow>
                 <TableRow key={6}>
                   <TableCell className="">6</TableCell>
-                  <TableCell className={item[0].mon6 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].tue6 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].wed6 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].thu6 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].fri6 ? "text-center bg-green-400" : ""}></TableCell>
-                  <TableCell className={item[0].sat6 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.mon6 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.tue6 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.wed6 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.thu6 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.fri6 ? "text-center bg-green-400" : ""}></TableCell>
+                  <TableCell className={item && item.sat6 ? "text-center bg-green-400" : ""}></TableCell>
                 </TableRow>
+               
               </TableBody>
             </Table>
             </Card>
-            <Accordion type='single' collapsible className="w-full">
+            <Accordion type='single' collapsible className="w-full pb-10">
               <AccordionItem value="item-1">
                 <AccordionTrigger>
                   コメント
                 </AccordionTrigger>
                 <AccordionContent>
-                  <p>{item[0].comment}</p>
+                  <p>{item && item.comment}</p>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -231,6 +239,8 @@ export default function Page() {
         );
       }
       )}
+      
+      
       <Drawer>
         <DrawerTrigger asChild>
           <Button variant="outline">ログイン</Button>
