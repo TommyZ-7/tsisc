@@ -252,14 +252,14 @@ export default function Page() {
               <DrawerDescription>Set your daily activity goal.</DrawerDescription>
             </DrawerHeader>
             <div className="p-4 pb-0">
-              <InputOTP maxLength={6} className='text-center' value={value} onChange={(value) => setValue(value)} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
-                <InputOTPGroup>
-                  <InputOTPSlot index={0} />
-                  <InputOTPSlot index={1} />
-                  <InputOTPSlot index={2} />
-                  <InputOTPSlot index={3} />
-                  <InputOTPSlot index={4} />
-                  <InputOTPSlot index={5} />
+              <InputOTP inputMode="text" maxLength={6} className='text-center' value={value} onChange={(value) => setValue(value)} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
+                <InputOTPGroup inputMode="text">
+                  <InputOTPSlot index={0} inputMode="text"/>
+                  <InputOTPSlot index={1} inputMode="text"/>
+                  <InputOTPSlot index={2} inputMode="text"/>
+                  <InputOTPSlot index={3} inputMode="text"/>
+                  <InputOTPSlot index={4} inputMode="text"/>
+                  <InputOTPSlot index={5} inputMode="text"/>
                 </InputOTPGroup>
               </InputOTP>
               {warnMSG ? <p className="text-red-500 text-center">6文字入力してください</p> : <br />}
