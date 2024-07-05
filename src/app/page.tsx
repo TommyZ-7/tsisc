@@ -116,7 +116,6 @@ export default function Page() {
       setSyougai(response.filter((action: { id: number; }) => action.id === 4)[0]);
       setKikaku(response.filter((action: { id: number; }) => action.id === 5)[0]);
       setKouhou(response.filter((action: { id: number; }) => action.id === 6)[0]);
-      console.log(response);
       setIsLoading(false);
     };
     response();
