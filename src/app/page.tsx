@@ -248,8 +248,8 @@ export default function Page() {
         <DrawerContent>
           <div className="mx-auto w-full max-w-sm">
             <DrawerHeader>
-              <DrawerTitle>Move Goal</DrawerTitle>
-              <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+              <DrawerTitle>ログイン</DrawerTitle>
+              <DrawerDescription>６桁のコードを入力してください</DrawerDescription>
             </DrawerHeader>
             <div className="p-4 pb-0">
               <InputOTP inputMode="text" maxLength={6} className='text-center' value={value} onChange={(value) => setValue(value)} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
