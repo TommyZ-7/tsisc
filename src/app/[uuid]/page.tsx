@@ -132,6 +132,7 @@ export default function Page() {
   useEffect(() => {
     const response = async () => {
       const response = await fetchActions(path || "");
+      
       setData(response.pop());
       setIsLoading(false);
     };
