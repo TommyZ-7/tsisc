@@ -12,7 +12,7 @@ export const fetchActions = async (lpath: String) => {
     return {status : 404}
   }
   
-  const actions = data.filter((action: { key: String; }) => action.key === lpath);
+  const actions = data;
 
 
 

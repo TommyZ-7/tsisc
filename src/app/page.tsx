@@ -96,26 +96,19 @@ export default function Page() {
   const [value, setValue] = React.useState("")
   const [iinntyo, setIinntyo] = useState<Action>();
   const [huku, setHuku] = useState<Action>();
-  const [syomu, setSyomu] = useState<Action>();
-  const [syougai, setSyougai] = useState<Action>();
-  const [kikaku, setKikaku] = useState<Action>();
-  const [kouhou, setKouhou] = useState<Action>();
+  const [huku2 , setHuku2] = useState<Action>();
   const [warnMSG, setWarnMSG] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const list = [iinntyo, huku, syomu, syougai, kikaku, kouhou];
-  const listName = ['委員長', '副委員長', '庶務局', '渉外局', '企画局', '広報局'];
+  const list = [iinntyo, huku, huku2];
+  const listName = ['委員長', '副委員長', '副委員長2'];
 
 
   useEffect(() => {
     const response = async () => {
       const response = await fetchActions();
-      //responsの中の1番目の配列を取得
       setIinntyo(response.filter((action: { id: number; }) => action.id === 1)[0]);
       setHuku(response.filter((action: { id: number; }) => action.id === 2)[0]);
-      setSyomu(response.filter((action: { id: number; }) => action.id === 3)[0]);
-      setSyougai(response.filter((action: { id: number; }) => action.id === 4)[0]);
-      setKikaku(response.filter((action: { id: number; }) => action.id === 5)[0]);
-      setKouhou(response.filter((action: { id: number; }) => action.id === 6)[0]);
+      setHuku2(response.filter((action: { id: number; }) => action.id === 3)[0]);
       setIsLoading(false);
     };
     response();
@@ -135,10 +128,12 @@ export default function Page() {
     setWarnMSG(false);
     const response = async () => {
       const response = await authActions(value);
-      if (response.status === 404) {
+      if (response.status === 200) {
+        route.push(`/${response.key}`)
         return;
+      } else {
+        setWarnMSG(true);
       }
-      route.push(`/${response.key}`)
     }
     response();
 
@@ -262,7 +257,7 @@ export default function Page() {
                   <InputOTPSlot index={5} inputMode="text"/>
                 </InputOTPGroup>
               </InputOTP>
-              {warnMSG ? <p className="text-red-500 text-center">6文字入力してください</p> : <br />}
+              {warnMSG ? <p className="text-red-500 text-center">正しいコードを入力してください</p> : <br />}
 
               
             </div>
