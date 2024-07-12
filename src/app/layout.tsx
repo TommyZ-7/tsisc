@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="./manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png"></link>
@@ -44,6 +44,7 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
+            storageKey="acme-theme"
           >{children}
           </ThemeProvider></body>
     </html>
