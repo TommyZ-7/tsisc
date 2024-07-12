@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { fetchActions } from './dbFetch';
 import { useRouter } from 'next/navigation';
 import { authActions } from './authdb';
-import { supabase } from '@/lib/supabaseClient';
+
 
 import {
   Table,
@@ -47,7 +47,6 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { CodeSquare } from 'lucide-react';
 
 type Action = {
   id: number;
@@ -141,7 +140,13 @@ export default function Page() {
   }
 
   if (isLoading) {
-    return <div className='text-center'>Loading...</div>;
+    return (
+      <>
+        <div className='text-center'>Loading...</div>
+        
+
+      </>
+  );
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
