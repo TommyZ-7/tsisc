@@ -89,6 +89,7 @@ type Action = {
   sat4: number;
   sat5: number;
   sat6: number;
+  rawName: string;
 };
 
 export default function Page() {
@@ -100,7 +101,7 @@ export default function Page() {
   const [warnMSG, setWarnMSG] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const list = [iinntyo, huku, huku2];
-  const listName = ['委員長', '副委員長', '副委員長2'];
+  const listName = ['委員長', '副委員長', '副委員長'];
 
 
   useEffect(() => {
@@ -119,7 +120,7 @@ export default function Page() {
 
   const handlePress = () => {
     console.log('pressed');
-    if (value.length !== 6) {
+    if (value.length !== 7) {
       setWarnMSG(true);
       return;
     }
@@ -140,14 +141,14 @@ export default function Page() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className='text-center'>Loading...</div>;
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       {list.map((item , index) => {
         return (
           <div key={index} className=" max-w-2xl">
-            <h1 className="text-2xl font-bold text-center">{listName[index]}</h1>
+            <h1 className="text-2xl font-bold text-center">{listName[index]}({item?.rawName})</h1>
             <Card>
             <Table>
               <TableHeader>
@@ -247,7 +248,7 @@ export default function Page() {
               <DrawerDescription>６桁のコードを入力してください</DrawerDescription>
             </DrawerHeader>
             <div className="p-4 pb-0">
-              <InputOTP inputMode="text" maxLength={6} className='text-center' value={value} onChange={(value) => setValue(value)} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
+              <InputOTP inputMode="text" maxLength={7} className='text-center' value={value} onChange={(value) => setValue(value)} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
                 <InputOTPGroup inputMode="text">
                   <InputOTPSlot index={0} inputMode="text"/>
                   <InputOTPSlot index={1} inputMode="text"/>
@@ -255,6 +256,7 @@ export default function Page() {
                   <InputOTPSlot index={3} inputMode="text"/>
                   <InputOTPSlot index={4} inputMode="text"/>
                   <InputOTPSlot index={5} inputMode="text"/>
+                  <InputOTPSlot index={6} inputMode="text"/>
                 </InputOTPGroup>
               </InputOTP>
               {warnMSG ? <p className="text-red-500 text-center">正しいコードを入力してください</p> : <br />}
@@ -262,7 +264,7 @@ export default function Page() {
               
             </div>
             <DrawerFooter>
-              <Button onClick={handlePress}>Submit</Button>
+              <Button onClick={handlePress} >Submit</Button>
               <DrawerClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DrawerClose>

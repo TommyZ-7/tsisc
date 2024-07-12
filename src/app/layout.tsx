@@ -26,14 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" suppressHydrationWarning>
+    <html lang="ja">
       <head>
         <link rel="manifest" href="./manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png"></link>
         <meta name="theme-color" content="#371d03" />
-
-
-
       </head>
       <body className={cn(
           "min-h-screen bg-background font-sans antialiased",
@@ -44,9 +41,10 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-            storageKey="acme-theme"
-          >{children}
-          </ThemeProvider></body>
+          >
+            {children}
+          </ThemeProvider>
+      </body>
     </html>
   );
 }

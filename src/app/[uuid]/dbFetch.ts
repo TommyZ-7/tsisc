@@ -11,12 +11,14 @@ export const fetchActions = async (lpath: String) => {
   if (error){
     return {status : 404}
   }
-  
-  const actions = data;
-
-
 
 
   
-  return JSON.parse(JSON.stringify(actions));
+  const actions = data.filter((action : {key : String}) => action.key === lpath);
+
+
+
+
+  
+  return {status : 200, actions : actions};
 };
