@@ -250,7 +250,7 @@ export default function Page() {
           <div className="mx-auto w-full max-w-sm">
             <DrawerHeader>
               <DrawerTitle>ログイン</DrawerTitle>
-              <DrawerDescription>６桁のコードを入力してください</DrawerDescription>
+              <DrawerDescription>７桁のコードを入力してください</DrawerDescription>
             </DrawerHeader>
             <div className="p-4 pb-0">
               <InputOTP inputMode="text" maxLength={7} className='text-center' value={value} onChange={(value) => setValue(value)} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
